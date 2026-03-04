@@ -9,5 +9,29 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      (function () {
+        const hidePaths = [
+          '/kpis','/projections','/pricing','/budget','/ab-tests','/beta','/partnerships','/risks'
+        ];
+        const links = Array.from(document.querySelectorAll('a[href]'));
+        links.forEach(a => {
+          const href = a.getAttribute('href');
+          if (hidePaths.includes(href)) {
+            const row = a.closest('a')?.parentElement?.parentElement || a.parentElement;
+            (row || a).style.display = 'none';
+          }
+        });
+        // Also hide section headers if all links under them were hidden
+        const sections = Array.from(document.querySelectorAll('nav div')).filter(el => el.querySelector('a'));
+        sections.forEach(section => {
+          const visibleLinks = Array.from(section.querySelectorAll('a')).filter(a => a.offsetParent !== null);
+          if (visibleLinks.length === 0) {
+            const header = section.previousElementSibling;
+            if (header && header.tagName === 'P') header.style.display = 'none';
+          }
+        });
+      })();
+    </script>
   </body>
 </html>
