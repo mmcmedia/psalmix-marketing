@@ -11,9 +11,6 @@
     <div id="root"></div>
     <script>
       (function () {
-        const hidePaths = [
-          '/kpis','/projections','/pricing','/budget','/ab-tests','/beta','/partnerships','/risks'
-        ];
         const hideDocs = [
           'PATH-TO-1M-STRATEGY.md',
           'GROWTH-1M-ARR-PLAYBOOK.md',
@@ -35,28 +32,11 @@
               (row || a).style.display = 'none';
             }
           });
-          const links = Array.from(document.querySelectorAll('a[href]'));
-          links.forEach(a => {
-            const href = a.getAttribute('href');
-            if (hidePaths.includes(href)) {
-              const row = a.closest('a')?.parentElement?.parentElement || a.parentElement;
-              (row || a).style.display = 'none';
-            }
-          });
-          const sections = Array.from(document.querySelectorAll('nav div')).filter(el => el.querySelector('a'));
-          sections.forEach(section => {
-            const visibleLinks = Array.from(section.querySelectorAll('a')).filter(a => a.offsetParent !== null);
-            if (visibleLinks.length === 0) {
-              const header = section.previousElementSibling;
-              if (header && header.tagName === 'P') header.style.display = 'none';
-            }
-          });
 
           const allBlocks = Array.from(document.querySelectorAll('div, p, span'));
           allBlocks.forEach(el => {
             const text = (el.textContent || '').trim();
             if (!text) return;
-            // Only target leaf nodes to avoid hiding large containers
             if (el.children && el.children.length > 0) return;
             if (homeTexts.some(t => text === t || text.includes(t))) {
               const card = el.closest('div[class]') || el.parentElement;
