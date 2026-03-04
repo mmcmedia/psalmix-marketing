@@ -1,9 +1,6 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "env": {
-    "DASHBOARD_PASSWORD": "@psalmix_dashboard_password"
-  },
   "headers": [
     {
       "source": "/api/(.*)",
