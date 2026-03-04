@@ -45,6 +45,24 @@ module.exports = (req, res) => {
   }
 
   const requested = (req.query.path || '').replace(/\/+$/, '');
+  const blocked = [
+    'kpis',
+    'projections',
+    'pricing',
+    'budget',
+    'ab-tests',
+    'beta',
+    'partnerships',
+    'risks'
+  ];
+  const isBlocked = blocked.some(prefix => requested === prefix || requested.startsWith(prefix + '/'));
+  if (isBlocked) {
+    res.statusCode = 410;
+    res.setHeader('Content-Type', 'text/html');
+    res.end(`<!DOCTYPE html><html><head><title>Section removed</title></head><body style="font-family:Arial;text-align:center;padding:40px;background:#0f172a;color:#e2e8f0;"><div style="background:#111827;padding:30px;border-radius:12px;max-width:520px;margin:0 auto;border:1px solid #334155;"><h1 style="margin:0 0 12px;">Section removed</h1><p>This analytics section was removed to avoid placeholder data.</p><p>Please use the Strategy Docs, Marketing Assets, or Outreach Playbooks.</p></div></body></html>`);
+    return;
+  }
+
   let relPath = requested === '' ? 'index.html' : requested;
 
   // If no extension, serve index.html (SPA fallback)
