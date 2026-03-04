@@ -14,6 +14,15 @@
         const hidePaths = [
           '/kpis','/projections','/pricing','/budget','/ab-tests','/beta','/partnerships','/risks'
         ];
+        const hideDocs = [
+          'PATH-TO-1M-STRATEGY.md',
+          'GROWTH-1M-ARR-PLAYBOOK.md',
+          'PSALMIX-REVENUE-MODEL.md',
+          'PROJECTED-ANALYTICS.md',
+          'KPI-TRACKING-FRAMEWORK.md',
+          'PRICING-PSYCHOLOGY-GUIDE.md',
+          'PRICING-PAGE-COPY.md'
+        ];
         const links = Array.from(document.querySelectorAll('a[href]'));
         links.forEach(a => {
           const href = a.getAttribute('href');
