@@ -23,35 +23,50 @@
           'PRICING-PSYCHOLOGY-GUIDE.md',
           'PRICING-PAGE-COPY.md'
         ];
-        const links = Array.from(document.querySelectorAll('a[href]'));
-        links.forEach(a => {
-          const href = a.getAttribute('href');
-          if (hidePaths.includes(href)) {
-            const row = a.closest('a')?.parentElement?.parentElement || a.parentElement;
-            (row || a).style.display = 'none';
-          }
-        });
-        // Also hide section headers if all links under them were hidden
-        const sections = Array.from(document.querySelectorAll('nav div')).filter(el => el.querySelector('a'));
-        sections.forEach(section => {
-          const visibleLinks = Array.from(section.querySelectorAll('a')).filter(a => a.offsetParent !== null);
-          if (visibleLinks.length === 0) {
-            const header = section.previousElementSibling;
-            if (header && header.tagName === 'P') header.style.display = 'none';
-          }
-        });
-
-        // Hide inflated goal tiles on home (Year 1 Goal / ARR target)
         const homeTexts = ['Year 1 Goal', 'ARR target', '$1.2M', '100K'];
-        const allBlocks = Array.from(document.querySelectorAll('div, p, span'));
-        allBlocks.forEach(el => {
-          const text = (el.textContent || '').trim();
-          if (!text) return;
-          if (homeTexts.some(t => text.includes(t))) {
-            const card = el.closest('div');
-            if (card) card.style.display = 'none';
-          }
-        });
+
+        function applyHides() {
+          const docLinks = Array.from(document.querySelectorAll('a[href*="/docs?doc="]'));
+          docLinks.forEach(a => {
+            const href = a.getAttribute('href');
+            const doc = href?.split('doc=')[1];
+            if (doc && hideDocs.includes(decodeURIComponent(doc))) {
+              const row = a.closest('a')?.parentElement || a;
+              (row || a).style.display = 'none';
+            }
+          });
+          const links = Array.from(document.querySelectorAll('a[href]'));
+          links.forEach(a => {
+            const href = a.getAttribute('href');
+            if (hidePaths.includes(href)) {
+              const row = a.closest('a')?.parentElement?.parentElement || a.parentElement;
+              (row || a).style.display = 'none';
+            }
+          });
+          const sections = Array.from(document.querySelectorAll('nav div')).filter(el => el.querySelector('a'));
+          sections.forEach(section => {
+            const visibleLinks = Array.from(section.querySelectorAll('a')).filter(a => a.offsetParent !== null);
+            if (visibleLinks.length === 0) {
+              const header = section.previousElementSibling;
+              if (header && header.tagName === 'P') header.style.display = 'none';
+            }
+          });
+
+          const allBlocks = Array.from(document.querySelectorAll('div, p, span'));
+          allBlocks.forEach(el => {
+            const text = (el.textContent || '').trim();
+            if (!text) return;
+            if (homeTexts.some(t => text.includes(t))) {
+              const card = el.closest('div');
+              if (card) card.style.display = 'none';
+            }
+          });
+        }
+
+        applyHides();
+        const observer = new MutationObserver(() => applyHides());
+        observer.observe(document.body, { childList: true, subtree: true });
+        setTimeout(() => observer.disconnect(), 10000);
       })();
     </script>
   </body>
