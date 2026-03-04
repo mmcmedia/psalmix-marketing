@@ -11,15 +11,7 @@
     <div id="root"></div>
     <script>
       (function () {
-        const hideDocs = [
-          'PATH-TO-1M-STRATEGY.md',
-          'GROWTH-1M-ARR-PLAYBOOK.md',
-          'PSALMIX-REVENUE-MODEL.md',
-          'PROJECTED-ANALYTICS.md',
-          'KPI-TRACKING-FRAMEWORK.md',
-          'PRICING-PSYCHOLOGY-GUIDE.md',
-          'PRICING-PAGE-COPY.md'
-        ];
+        const hideDocs = [];
         const homeTexts = ['Year 1 Goal', 'ARR target', '$1.2M', '100K'];
 
         function applyHides() {
@@ -29,6 +21,15 @@
             const doc = href?.split('doc=')[1];
             if (doc && hideDocs.includes(decodeURIComponent(doc))) {
               const row = a.closest('a')?.parentElement || a;
+              (row || a).style.display = 'none';
+            }
+          });
+
+          const links = Array.from(document.querySelectorAll('a[href]'));
+          links.forEach(a => {
+            const href = a.getAttribute('href');
+            if (['/kpis','/projections','/pricing','/budget','/ab-tests','/beta','/partnerships','/risks'].includes(href)) {
+              const row = a.closest('a')?.parentElement?.parentElement || a.parentElement;
               (row || a).style.display = 'none';
             }
           });
