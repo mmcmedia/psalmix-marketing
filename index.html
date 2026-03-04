@@ -56,9 +56,13 @@
           allBlocks.forEach(el => {
             const text = (el.textContent || '').trim();
             if (!text) return;
-            if (homeTexts.some(t => text.includes(t))) {
-              const card = el.closest('div');
-              if (card) card.style.display = 'none';
+            // Only target leaf nodes to avoid hiding large containers
+            if (el.children && el.children.length > 0) return;
+            if (homeTexts.some(t => text === t || text.includes(t))) {
+              const card = el.closest('div[class]') || el.parentElement;
+              if (card && card.id !== 'root' && card !== document.body) {
+                card.style.display = 'none';
+              }
             }
           });
         }
