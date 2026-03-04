@@ -12,10 +12,10 @@
       ]
     }
   ],
-  "rewrites": [
+  "routes": [
     {
-      "source": "/(.*)",
-      "destination": "/api/auth?path=$1"
+      "src": "/(.*)",
+      "dest": "/api/auth?path=$1"
     }
   ]
 }
